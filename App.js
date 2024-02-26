@@ -3,6 +3,9 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import MealsNavigator from './navigation/MealsNavigator';
+import { useScreen } from 'react-native-screens';
+
+// useScreen();
 
 // import * as Font from 'expo-status-bar';
 // import { AppLoading } from 'expo';
