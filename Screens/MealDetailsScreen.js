@@ -9,7 +9,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 const MealDetailsScreen = props => {
 
-    const mealId = props.navigation.getParam('mealId');
+    const mealId = props.route.params.mealId;
     const selectedMeals = MEALS.find(meal => meal.id === mealId)
 
     return (
@@ -31,7 +31,7 @@ MealDetailsScreen.navigationOptions = navigationData => {
 
     return{
         headerTitle: selectedMeals.title,
-        headerRight: (
+        headerRight: () => (
         <HeaderButtons HeaderButtonComponent={HeaderButton}>
             <AntDesign name="staro" size={24} onPress={()=> {
                 console.log("Mark as Favorite!!");
