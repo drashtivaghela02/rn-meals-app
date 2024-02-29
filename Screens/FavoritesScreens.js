@@ -1,12 +1,12 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
+import MealList from '../coponents/MealList';
+import { MEALS } from '../data/dummy-data';
+
 const FavoritesScreens = props => {
-    return (
-        <View style = {styles.screen} >
-            <Text>The Favorites Meal Screen!</Text>
-        </View>
-    );
+    const favMeals = MEALS.filter(meal => meal.id === 'm1' || meal.id === 'm2')
+    return <MealList listData={favMeals} navigation = {props.navigation} />;
 };
 
 const styles = StyleSheet.create({

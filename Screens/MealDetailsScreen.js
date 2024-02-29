@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useLayoutEffect } from 'react';
 import {View, Text, StyleSheet, Button} from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
@@ -11,6 +11,21 @@ const MealDetailsScreen = props => {
 
     const mealId = props.route.params.mealId;
     const selectedMeals = MEALS.find(meal => meal.id === mealId)
+
+    useLayoutEffect(() => {
+        props.navigation.setOptions({
+            headerTitle : selectedMeals.title,
+            headerRight : () => {
+                return (
+                    <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                        <AntDesign name="staro" size={24} onPress={()=> {
+                            console.log("Mark as Favorite!!");
+                        }} />
+                    </HeaderButtons>
+                );
+            }
+        });
+    },[props.navigation]);
 
     return (
         <View style={styles.screen}>
