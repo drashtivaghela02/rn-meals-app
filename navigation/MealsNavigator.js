@@ -66,26 +66,29 @@ const FavNavigator = () => {
                 component={MealDetailsScreen}
             />
         </Stack.Navigator>
-    )
-}
+    );
+};
 
 const MealsFavTabNavigator = () => {
     return (
-
             <Tab.Navigator 
-                shifting={true} 
-                screenOptions={({route}) => ({
-                    tabBarStyle: {backgroundColor : route.name==='Meals' ? Colors.primaryColor : Colors.accentColor}
-                })}
+                shifting={true}
+                barStyle={{ backgroundColor: Colors.primaryColor }}
+                activeColor = {Colors.accentColor}
+                tabBarOptions={{
+                    activeTintColor: 'white',
+                    barStyles: {
+                        backgroundColor: Colors.primaryColor, // Background color for tabs
+                    },
+                }} 
             >
                 <Tab.Screen
                     name="Meals"
                     component={MealsNavigator}
                     options={{
                         tabBarIcon: ({ color }) => (
-                            <Ionicons name="fast-food-outline" size={25} color={color} />
+                            <Ionicons name="fast-food-outline" size={25} color='white' />
                         ),
-                        tabBarColor: 'red' ,
                         headerShown: false, 
                         
                     }}
@@ -96,12 +99,11 @@ const MealsFavTabNavigator = () => {
                     options={{
                         tabBarLabel: 'Favorites!',
                         tabBarIcon: ({ color }) => (
-                            <AntDesign name="staro" size={25} color={color} />
+                            <AntDesign name="staro" size={25} color='white' />
                         )
                     }}
                 />
             </Tab.Navigator>
-
     );
 };
 
@@ -114,20 +116,27 @@ const FiltersNavigator = () => {
                 headerTitleStyle: { fontWeight: 'bold', },
             }}    
         >
-            <Stack.Screen name='Filter' component={FilterScreen} options={{headerShown : false}}/>
+            <Stack.Screen name='Filter' component={FilterScreen} />
         </Stack.Navigator>
     );
 };
 
 const MainNavigator = () => {
     return(
-    <NavigationContainer>
-        <Drawer.Navigator>
-            <Drawer.Screen name='MealsFavs' component={MealsFavTabNavigator} options={{headerShown : false}} />
-            <Drawer.Screen name='Filters' component={FiltersNavigator} />
-        </Drawer.Navigator>
-    </NavigationContainer>
-);
+        <NavigationContainer>
+            <Drawer.Navigator
+                screenOptions={{
+                    drawerActiveTintColor: Colors.accentColor,
+                    drawerLabelStyle : {
+                        fontWeight: 'bold'
+                    }
+                  }}
+            >
+                <Drawer.Screen name='MealsFavs' component={MealsFavTabNavigator} options={{headerShown : false}} />
+                <Drawer.Screen name='Filters' component={FiltersNavigator} options={{headerShown : false}} />
+            </Drawer.Navigator>
+        </NavigationContainer>
+    );
 };
 
 export default MainNavigator;
