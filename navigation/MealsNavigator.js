@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, SafeAreaView } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -31,7 +31,6 @@ const MealsNavigator = () => {
             <Stack.Screen
                 name="Categories"
                 component={CategoriesScreen}
-                options={{headerTitle: 'Meal Categories !!!' }}
             />
             <Stack.Screen
                 name="CategoryMeals"
@@ -75,6 +74,7 @@ const MealsFavTabNavigator = () => {
                 shifting={true}
                 barStyle={{ backgroundColor: Colors.primaryColor }}
                 activeColor = {Colors.accentColor}
+                inactiveColor = 'white'
                 tabBarOptions={{
                     activeTintColor: 'white',
                     barStyles: {
@@ -87,7 +87,7 @@ const MealsFavTabNavigator = () => {
                     component={MealsNavigator}
                     options={{
                         tabBarIcon: ({ color }) => (
-                            <Ionicons name="fast-food-outline" size={25} color='white' />
+                            <Ionicons name="fast-food-outline" size={25} color={color} />
                         ),
                         headerShown: false, 
                         
@@ -99,7 +99,7 @@ const MealsFavTabNavigator = () => {
                     options={{
                         tabBarLabel: 'Favorites!',
                         tabBarIcon: ({ color }) => (
-                            <AntDesign name="staro" size={25} color='white' />
+                            <AntDesign name="staro" size={25} color={color} />
                         )
                     }}
                 />
@@ -129,7 +129,7 @@ const MainNavigator = () => {
                     drawerActiveTintColor: Colors.accentColor,
                     drawerLabelStyle : {
                         fontWeight: 'bold'
-                    }
+                    },
                   }}
             >
                 <Drawer.Screen name='MealsFavs' component={MealsFavTabNavigator} options={{headerShown : false}} />

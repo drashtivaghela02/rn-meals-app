@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import { View, FlatList, StyleSheet } from "react-native";
 
 import MealItem from "./MealItem";
@@ -12,7 +12,10 @@ const MealList = props => {
             complexity={itemData.item.complexity}
             afordability={itemData.item.afordability}
             onSelectMeal={() => {
-                props.navigation.navigate('MealDetail', {mealId: itemData.item.id});
+                props.navigation.navigate('MealDetail', {
+                    mealId: itemData.item.id,
+                    mealTitle : itemData.item.title
+                });
             }} 
             />
         );

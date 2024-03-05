@@ -1,10 +1,12 @@
 import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { View, Text, StyleSheet, Switch, Platform  } from 'react-native';
-
+import { useDispatch } from 'react-redux';
 import { HeaderButtons } from 'react-navigation-header-buttons';
-import HeaderButton from '../coponents/HeaderButton';
 import { Ionicons } from '@expo/vector-icons';
+
+import HeaderButton from '../coponents/HeaderButton';
 import Colors from '../constatnts/Colors'
+import { setFilters } from '../store/actions/meals';
 
 const FilterSwitch = props => {
     return(
@@ -26,6 +28,8 @@ const FilterScreen = props => {
     const [isVegan, setIsVegan] = useState(false);
     const [isVegeterian, setIsVegeterian] = useState(false);
 
+    const dispatch = useDispatch();
+
     const saveFilters = useCallback(() => {
         const appliedFilters = {
             glutenFree : isGlutenFree,
@@ -34,7 +38,8 @@ const FilterScreen = props => {
             vegeterian : isVegeterian
         };
         console.log(appliedFilters);
-    },[ isGlutenFree, isLactoseFree, isVegan, isVegeterian ]);
+        dispatch(setFilters(appliedFilters));
+    },[ isGlutenFree, isLactoseFree, isVegan, isVegeterian, dispatch ]);
     
     useLayoutEffect(() => {
         props.navigation.setOptions({
@@ -42,14 +47,14 @@ const FilterScreen = props => {
             headerLeft : () => {
                 return (
                     <HeaderButtons HeaderButtonComponent={HeaderButton}>
-                        <Ionicons name="menu" size={24} onPress={()=> props.navigation.toggleDrawer()} />
+                        <Ionicons name="menu" size={24} color='white' style={styles.button} onPress={()=> props.navigation.toggleDrawer()} />
                     </HeaderButtons>
                 );
             },
             headerRight : () => {
                 return (
                     <HeaderButtons HeaderButtonComponent={HeaderButton}>
-                        <Ionicons name="save" size={24} onPress={saveFilters} />
+                        <Ionicons name="save-outline" size={24} color='white' onPress={saveFilters} />
                     </HeaderButtons>
                 );
             }
@@ -100,6 +105,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width : '80%', 
         marginVertical: 10
+    },
+    button: {
+        marginLeft : 15
     }
 });
 

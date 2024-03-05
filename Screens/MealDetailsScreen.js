@@ -1,12 +1,11 @@
 import React, { useLayoutEffect } from 'react';
 import {View, Text, StyleSheet, Button, ScrollView, Image} from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-
-import { MEALS } from '../data/dummy-data';
-import HeaderButton from '../coponents/HeaderButton';
-
 import { AntDesign } from '@expo/vector-icons';
-import { RectButton } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from 'react-redux';
+
+import HeaderButton from '../coponents/HeaderButton';
+import { toggleFavorite } from '../store/actions/meals';
 
 const ListItem = props => {
     return <View style= {styles.listItem} >
@@ -17,30 +16,36 @@ const ListItem = props => {
 const MealDetailsScreen = props => {
 
     const mealId = props.route.params.mealId;
-    const selectedMeals = MEALS.find(meal => meal.id === mealId)
+    const availableMeals = useSelector(state => state.meals.meals);
+    const isFavorite = useSelector(state => state.meals.favoriteMeals.some(meal => meal.id === mealId))
+    const selectedMeals = availableMeals.find(meal => meal.id === mealId);
 
+    const dispatch = useDispatch();
+
+    const toggleFavoriteHandler = () => {
+        dispatch(toggleFavorite(mealId));
+    };
+    // console.log(isFavorite);
     useLayoutEffect(() => {
         props.navigation.setOptions({
             headerTitle : selectedMeals.title,
             headerRight : () => {
                 return (
                     <HeaderButtons HeaderButtonComponent={HeaderButton}>
-                        <AntDesign name="staro" size={24} onPress={()=> {
-                            console.log("Mark as Favorite!!");
-                        }} />
+                        {isFavorite ? <AntDesign name="star" size={24} color='white' onPress={toggleFavoriteHandler} /> : <AntDesign name="staro" size={24} color='white'                                                                                       onPress={toggleFavoriteHandler} />}
                     </HeaderButtons>
                 );
             }
         });
-    },[props.navigation]);
+    },[props.navigation, isFavorite]);
 
     return (
         <ScrollView>
             <Image source={{uri : selectedMeals.imageUrl}} style = {styles.image} />
             <View style={styles.detail}>
-                    <Text>{selectedMeals.duration}</Text>
-                    <Text>{selectedMeals.complexity}</Text>
-                    <Text>{selectedMeals.afordability}</Text>
+                    <Text> {selectedMeals.duration}  MIN</Text>
+                    <Text style={styles.textStyle}>{selectedMeals.complexity}</Text>
+                    <Text style={styles.textStyle}>{selectedMeals.afordability}</Text>
             </View>
             <Text style = {styles.title}>Ingredients</Text>
             {selectedMeals.ingredients.map(ingredient => (
@@ -54,42 +59,29 @@ const MealDetailsScreen = props => {
     );
 };
 
-MealDetailsScreen.navigationOptions = navigationData => {
-    const mealId = navigationData.navigation.getParam('mealId');
-    const selectedMeals = MEALS.find(meal => meal.id === mealId);
-
-    return{
-        headerTitle: selectedMeals.title,
-        headerRight: () => (
-        <HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <AntDesign name="staro" size={24} onPress={()=> {
-                console.log("Mark as Favorite!!");
-            }} />
-        </HeaderButtons>
-        )
-    };
-};
-
 const styles = StyleSheet.create({
-    listItem :{
+    listItem: {
         marginVertical: 10 ,
         marginHorizontal: 20,
         borderColor: '#ccc',
         borderWidth: 1,
-        padding : 10
+        padding: 10
     },
-    image : {
-        width : '100%',
+    image: {
+        width: '100%',
         height: 200
     },
     title: {
         textAlign: 'center',
         fontWeight: 'bold',
     },
-    detail : {
-        flexDirection : 'row',
+    detail: {
+        flexDirection: 'row',
         padding: 15,
         justifyContent: 'space-around'
+    },
+    textStyle: {
+        textTransform : 'uppercase'
     }
 });
 

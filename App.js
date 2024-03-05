@@ -3,9 +3,18 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import MealsNavigator from './navigation/MealsNavigator';
+import mealsReducer from './store/reducers/meals';
 import { useScreen } from 'react-native-screens';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
 
 // useScreen();
+
+const rootReducer = combineReducers({
+  meals : mealsReducer
+});
+
+const store = createStore(rootReducer);
 
 // import * as Font from 'expo-status-bar';
 // import { AppLoading } from 'expo';
@@ -25,7 +34,9 @@ export default function App() {
   // }
 
   return (
-    <MealsNavigator />
+    <Provider store={store}>
+      <MealsNavigator />
+    </Provider>
   );
 }
 
